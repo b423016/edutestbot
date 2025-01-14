@@ -14,7 +14,7 @@ from docx import Document
 from langchain_openai import ChatOpenAI
 
 # Set OpenAI API key directly
-openai_api_key = "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"
+openai_api_key = "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"
 
 # Initialize ChatOpenAI model
 gpt_model = ChatOpenAI(
