@@ -6,29 +6,21 @@ st.set_page_config(
     initial_sidebar_state="auto",
     menu_items=None
 )
-
 from educhain import Educhain, LLMConfig
 import pandas as pd
-import PyPDF2
-from docx import Document
 from langchain_openai import ChatOpenAI
 
-# Set OpenAI API key directly
-openai_api_key = "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"
+openai_api_key =  "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"
 
-# Initialize ChatOpenAI model
 gpt_model = ChatOpenAI(
     model_name="gpt-4o-mini",
     openai_api_key=openai_api_key
 )
 
-# Create LLMConfig with the custom model
 gpt_config = LLMConfig(custom_model=gpt_model)
 
-# Instantiate Educhain client with configuration
 client = Educhain(config=gpt_config)
 
-# Load quiz dataset
 @st.cache_data
 def load_quiz_dataset(file_path):
     try:
