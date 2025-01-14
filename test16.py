@@ -3,9 +3,15 @@ from educhain import Educhain
 import pandas as pd
 import PyPDF2
 from docx import Document
+import os
 
-# Instantiate Educhain client
-client = Educhain()
+# Set OpenAI API key directly
+openai_api_key = "sk-abcd1234efgh5678abcd1234efgh5678abcd1234"
+if not openai_api_key:
+    raise ValueError("The OPENAI_API_KEY is not set.")
+
+# Instantiate Educhain client with API key
+client = Educhain(api_key=openai_api_key)
 
 # Load quiz dataset
 @st.cache_data
