@@ -3,15 +3,22 @@ from educhain import Educhain
 import pandas as pd
 import PyPDF2
 from docx import Document
+from dotenv import load_dotenv
 import os
 
-# Set OpenAI API key directly
-openai_api_key = "sk-abcd1234efgh5678abcd1234efgh5678abcd1234"
-if not openai_api_key:
-    raise ValueError("The OPENAI_API_KEY is not set.")
+# Load environment variables from .env file
+load_dotenv()
 
-# Instantiate Educhain client with API key
-client = Educhain(api_key=openai_api_key)
+# Read OpenAI API key from environment variable
+openai_api_key = os.getenv("OPENAI_API_KEY")
+if not openai_api_key:
+    raise ValueError("The OPENAI_API_KEY environment variable is not set.")
+
+# Instantiate Educhain client
+client = Educhain()
+
+# Set the API key for the client
+client.set_api_key(openai_api_key)
 
 # Load quiz dataset
 @st.cache_data
