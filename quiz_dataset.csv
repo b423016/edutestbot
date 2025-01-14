@@ -17,7 +17,7 @@ question,answer,type,options
 "What is the largest organ in the human body?", "Skin", "multiple_choice", "Liver,Heart,Lungs,Skin"
 "What is the square root of 64?", "8", "multiple_choice", "6,7,8,9"
 "Who discovered penicillin?", "Alexander Fleming", "multiple_choice", "Marie Curie,Alexander Fleming,Isaac Newton,Albert Einstein"
-"What is the speed of light?", "299,792,458 m/s", "multiple_choice", "299,792,458 m/s,150,000,000 m/s,100,000,000 m/s,50,000,000 m/s"
+"What is the speed of light?", "299792458 m/s", "multiple_choice", "299792458 m/s,150000000 m/s,100000000 m/s,50000000 m/s"
 "What is the capital of Japan?", "Tokyo", "multiple_choice", "Beijing,Tokyo,Seoul,Bangkok"
 "What is the Pythagorean theorem?", "a^2 + b^2 = c^2", "multiple_choice", "a^2 + b^2 = c^2,a + b = c,a^2 - b^2 = c^2,a^2 / b^2 = c^2"
 "Who wrote '1984'?", "George Orwell", "multiple_choice", "George Orwell,Aldous Huxley,J.K. Rowling,Ernest Hemingway"

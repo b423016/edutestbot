@@ -1,29 +1,41 @@
 import streamlit as st
-from educhain import Educhain
+st.set_page_config(
+    page_title="EduChain Content Generator",
+    page_icon=None,
+    layout="centered",
+    initial_sidebar_state="auto",
+    menu_items=None
+)
+
+from educhain import Educhain, LLMConfig
 import pandas as pd
 import PyPDF2
 from docx import Document
-from dotenv import load_dotenv
-import os
+from langchain_openai import ChatOpenAI
 
-# Load environment variables from .env file
-load_dotenv()
+# Set OpenAI API key directly
+openai_api_key = "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"
 
-# Read OpenAI API key from environment variable
-openai_api_key = os.getenv("OPENAI_API_KEY")
-if not openai_api_key:
-    raise ValueError("The OPENAI_API_KEY environment variable is not set.")
+# Initialize ChatOpenAI model
+gpt_model = ChatOpenAI(
+    model_name="gpt-4o-mini",
+    openai_api_key=openai_api_key
+)
 
-# Instantiate Educhain client
-client = Educhain()
+# Create LLMConfig with the custom model
+gpt_config = LLMConfig(custom_model=gpt_model)
 
-# Set the API key for the client
-client.set_api_key(openai_api_key)
+# Instantiate Educhain client with configuration
+client = Educhain(config=gpt_config)
 
 # Load quiz dataset
 @st.cache_data
 def load_quiz_dataset(file_path):
-    return pd.read_csv(file_path)
+    try:
+        return pd.read_csv(file_path)
+    except pd.errors.ParserError as e:
+        st.error(f"Error reading CSV file: {e}")
+        return pd.DataFrame()  # Return an empty DataFrame in case of error
 
 quiz_dataset = load_quiz_dataset('quiz_dataset.csv')
 
@@ -51,9 +63,11 @@ with tab1:
             if content_source == "YouTube Video" and video_url:
                 questions = client.qna_engine.generate_questions_from_youtube(video_url, num=3)
             elif content_source in ["PDF", "Word Document", "Text File"] and uploaded_file:
-                questions = client.qna_engine.generate_questions_from_data(
-                    source=uploaded_file.read(), source_type=content_source.lower(), num=3
-                )
+                if uploaded_file is not None:
+                    uploaded_file.seek(0)  # Reset file pointer to the beginning
+                    questions = client.qna_engine.generate_questions_from_data(
+                        source=uploaded_file.read(), source_type=content_source.lower(), num=3
+                    )
             elif content_source == "URL" and url:
                 questions = client.qna_engine.generate_questions_from_data(url, source_type="url", num=3)
             else:
@@ -129,6 +143,6 @@ def generate_lesson_plan(areas_of_improvement):
         lesson_plan += f"- Review {topic}\n"
     return lesson_plan
 
-# Run the Streamlit app
-if __name__ == "__main__":
-    st.set_page_config(page_title="EduChain Content Generator")
+# # Run the Streamlit app
+# if __name__ == "__main__":
+#     st.set_page_config(page_title="EduChain Content Generator", page_icon=None, layout="centered", initial_sidebar_state="auto", menu_items=None)
